@@ -88,7 +88,7 @@ pipeline {
                 --query "Reservations[0].Instances[0].PrivateIpAddress" \
                 --output text)
 
-                scp $WORKSPACE/jenkins-files/deployments/fruits.service ubuntu@$PYTHON_INSTANCE_PUBLIC_IP:/tmp
+                cp $WORKSPACE/jenkins-files/deployments/fruits.service ubuntu@$PYTHON_INSTANCE_PUBLIC_IP:/tmp
 
                 ssh -o StrictHostKeyChecking=no ubuntu@$PYTHON_INSTANCE_PUBLIC_IP << EOF
                 sudo cp /tmp/fruits.service /etc/systemd/system/fruits.service

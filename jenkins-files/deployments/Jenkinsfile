@@ -59,6 +59,7 @@ pipeline {
                 --query "Reservations[0].Instances[0].PublicIpAddress" \
                 --output text);
 
+                ls -ltr $WORKSPACE
                 scp $WORKSPACE/vegetables.service ubuntu@$JAVA_INSTANCE_PUBLIC_IP:/etc/systemd/system/vegetables.service
 
 

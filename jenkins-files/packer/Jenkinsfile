@@ -22,11 +22,13 @@ pipeline {
             expression {params.TF_ACTION == 'WEB_AMI'}
         }
             steps {
-
+                dir ('packer-ami') {
                  sh 'ls -ltr'
+                 sh 'packer init .'
                  sh 'packer fmt .'
                  sh 'packer validate .'
                  sh 'packer build web.pkr.hcl'
+                }
             }
 
         }

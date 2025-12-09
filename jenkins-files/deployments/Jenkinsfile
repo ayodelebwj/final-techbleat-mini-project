@@ -70,7 +70,7 @@ pipeline {
                 sudo cp /tmp/vegetables.service /etc/systemd/system/vegetables.service
                 git clone https://github.com/techbleat/fruits-veg_market.git 
                 sudo systemctl daemon-reload
-                sudo systemctl enable vegetables.service
+                sudo systemctl restart vegetables.service
                 EOF
                 '''
                  }

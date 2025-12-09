@@ -20,7 +20,7 @@ pipeline {
     }
 
     stages {
-        stage (Get target machines ip addresses) {
+        stage ('Get target machines ip addresses') {
         when {
             expression {pararms.TF_ACTION == 'GET_TARGET_MACHINES_IP_ADDRESSES'}
         }

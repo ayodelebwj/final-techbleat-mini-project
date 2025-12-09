@@ -1,7 +1,7 @@
 [Service]
 User=ubuntu
 WorkingDirectory=/home/ubuntu/fruits-veg_market/java
-ExecStart=mvn spring-boot:run -Dspring-boot.run.arguments="--server.address=0.0.0.0 --server.port=9090" 
+ExecStart=mvn spring-boot:run -Dspring-boot.run.arguments="--server.address=0.0.0.0 --server.port=8080" 
 Restart=always
 
 [Install]

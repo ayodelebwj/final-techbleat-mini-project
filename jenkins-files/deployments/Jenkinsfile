@@ -5,66 +5,54 @@ pipeline {
         AWS_ACCESS_KEY_ID = credentials ('aws-access-key-id')
         AWS_SECRET_ACCESS_KEY = credentials ('aws-secret-access-key')
         AWS_DEFAULT_REGION = 'us-east-2'
-        TARGET_MACHINE_PRIVATE_IP = ''
+        WEB_MACHINE_PRIVATE_IP = ''
+        JAVA_INSTANCE_PUBLIC_IP = ''
+        JAVA_INSTANCE_PUBLIC_IP = ''
     }
 
     parameters {
         choice (
-        name: 'DEPLOYMENT',
-        choices: ['WEB_APP_NGINX', 'JAVA_APP', 'PYTHON_APP'],
-        description: 'Select App To Deploy'
+        name: 'TF_ACTION',
+        choices: ['GET_TARGET_MACHINES_IP_ADDRESSES', 'DEPLOY_NGINX_WEB_APP', 'DEPLOY_JAVA_APP', 'DEPLOY_PYTHON_APP'],
+        description: 'Select Action To Perform'
     )
 
     }
 
     stages {
-        stage ('Deploy Web App Nginx') {
+        stage (Get target machines ip addresses) {
         when {
-            expression {params.TF_ACTION == 'WEB APP NGINX'}
+            expression {pararms.TF_ACTION == 'GET_TARGET_MACHINES_IP_ADDRESSES'}
         }
             steps {
-                 sshagent (credentials: ['AWS-SSH-KEY']) {
                 sh '''
-                ssh -o StrictHostKeyChecking=no ubuntu@123.456.789.10 'cd ~ ;
-                export ${env.AWS_ACCESS_KEY_ID}
-                export ${env.AWS_SECRET_ACCESS_KEY}
-                export ${env.AWS_DEFAULT_REGION}
-                sudo apt install nginx -y ; 
-                sudo systemctl daemon-reload ;
-                sudo systemctl enable nginx ;
-                sudo systemctl start nginx ;
-                sudo rm -rf fruits-veg_market ;
-                git clone https://github.com/techbleat/fruits-veg_market.git ;
-                cd ~/fruits-veg_market/web ;
-                JAVA_INSTANCE_PUBLIC_IP=\\$(aws ec2 describe-instances --filters "Name=tag:Name,Values=java-instance" \
-                --query "Reservations[0].Instances[0].PublicIpAddress" \
+                web-instance-private-ip=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=web-instance" \
+                --query "Reservations[0].Instances[0].PrivateIpAddress" \
                 --output text);
-                sed -i "s|http://VEG_MACHINE:8080|http://"$JAVA_INSTANCE_PUBLIC_IP":8080|g" index.html;
-                PYTHON_INSTANCE_PUBLIC_IP=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=python-instance" \
-                --query "Reservations[0].Instances[0].PublicIpAddress" \
-                --output text);
-                sed -i "s|http://localhostFRUIT_MACHINE:9000|http://${PYTHON_INSTANCE_PUBLIC_IP}:9000|g" index.html;
+                env.WEB_INSTANCE_PRIVATE_IP = ${web-instance-private-ip};
 
-                sudo cp ~/fruits-veg_market/web/index.html /var/www/html/index.html'
+                java-instance-public-ip=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=java-instance" \
+                --query "Reservations[0].Instances[0].PublicIpAddress" \
+                --output text);
+                env.JAVA_INSTANCE_PUBLIC_IP = ${java-instance-public-ip};
+
+                python-instance-public-ip=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=python-instance" \
+                --query "Reservations[0].Instances[0].PublicIpAddress" \
+                --output text);
+                env.PYTHON_INSTANCE_PUBLIC_IP = ${python-instance-public-ip};
                 '''
-                 }
             }
         }
 
 
-
         stage ('Deploy Web App Nginx') {
         when {
-            expression {params.TF_ACTION == 'WEB APP NGINX'}
+            expression {params.TF_ACTION == 'WEB_APP_NGINX'}
         }
             steps {
                  sshagent (credentials: ['AWS-SSH-KEY']) {
                 sh '''
-                target-machine-private-ip=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=web-instance" \
-                --query "Reservations[0].Instances[0].PrivateIpAddress" \
-                --output text);
-                env.TARGET_MACHINE_PRIVATE_IP = ${target-machine-private-ip};
-                ssh -o StrictHostKeyChecking=no ubuntu@${env.TARGET_MACHINE_PRIVATE_IP} 'cd ~ ;
+                ssh -o StrictHostKeyChecking=no ubuntu@${env.WEB_INSTANCE_PRIVATE_IP} 'cd ~ ;
                 export ${env.AWS_ACCESS_KEY_ID}
                 export ${env.AWS_SECRET_ACCESS_KEY}
                 export ${env.AWS_DEFAULT_REGION}
@@ -75,14 +63,8 @@ pipeline {
                 sudo rm -rf fruits-veg_market ;
                 git clone https://github.com/techbleat/fruits-veg_market.git ;
                 cd ~/fruits-veg_market/web ;
-                JAVA_INSTANCE_PUBLIC_IP=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=java-instance" \
-                --query "Reservations[0].Instances[0].PublicIpAddress" \
-                --output text);
-                sed -i "s|http://VEG_MACHINE:8080|http://"$JAVA_INSTANCE_PUBLIC_IP":8080|g" index.html;
-                PYTHON_INSTANCE_PUBLIC_IP=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=python-instance" \
-                --query "Reservations[0].Instances[0].PublicIpAddress" \
-                --output text);
-                sed -i "s|http://localhostFRUIT_MACHINE:9000|http://${PYTHON_INSTANCE_PUBLIC_IP}:9000|g" index.html;
+                sed -i "s|http://VEG_MACHINE:8080|http://${env.JAVA_INSTANCE_PUBLIC_IP}:8080|g" index.html;
+                sed -i "s|http://FRUIT_MACHINE:9000|http://${env.PYTHON_INSTANCE_PUBLIC_IP}:9000|g" index.html;
 
                 sudo cp ~/fruits-veg_market/web/index.html /var/www/html/index.html'
                 '''
@@ -92,7 +74,7 @@ pipeline {
 
         stage ('Deploy Java App') {
         when {
-            expression {params.TF_ACTION == 'JAVA APP'}
+            expression {params.TF_ACTION == 'JAVA_APP'}
         }
             steps {
                  sshagent (credentials: ['AWS-SSH-KEY']) {
@@ -113,7 +95,7 @@ pipeline {
 
         stage ('Deploy Python App') {
         when {
-            expression {params.TF_ACTION == 'PYTHON APP'}
+            expression {params.TF_ACTION == 'PYTHON_APP'}
         }
             steps {
                  sshagent (credentials: ['AWS-SSH-KEY']) {

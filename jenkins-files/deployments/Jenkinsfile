@@ -63,12 +63,10 @@ pipeline {
                 scp $WORKSPACE/jenkins-files/deployments/vegetables.service  ubuntu@$JAVA_INSTANCE_PUBLIC_IP:/tmp
                 
 
-
                 ssh -o StrictHostKeyChecking=no ubuntu@$JAVA_INSTANCE_PUBLIC_IP <<EOF
                 cd ~
                 sudo rm -rf fruits-veg_market
                 sudo cp /tmp/vegetables.service /etc/systemd/system/vegetables.service
-                git clone https://github.com/techbleat/fruits-veg_market.git 
                 sudo systemctl daemon-reload
                 sudo systemctl restart vegetables.service
                 EOF

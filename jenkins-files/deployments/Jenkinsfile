@@ -64,7 +64,7 @@ pipeline {
                 
 
 
-                ssh -o StrictHostKeyChecking=no ubuntu@$JAVA_INSTANCE_PUBLIC_IP << 'EOF'
+                ssh -o StrictHostKeyChecking=no ubuntu@$JAVA_INSTANCE_PUBLIC_IP <<EOF
                 cd ~
                 sudo rm -rf fruits-veg_market
                 sudo cp /tmp/vegetables.service /etc/systemd/system/vegetables.service

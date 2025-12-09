@@ -9,7 +9,7 @@ pipeline {
 
     parameters {
         choice(
-        name: 'PACKER_AMI',
+        name: 'TF_ACTION',
         choices: ['WEB_AMI', 'JAVA_AMI', 'PYTHON_APP'],
         description: 'Select AMI To Create'
     )

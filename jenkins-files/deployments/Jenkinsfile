@@ -60,8 +60,8 @@ pipeline {
                 --output text);
 
                 ssh -o StrictHostKeyChecking=no ubuntu@$JAVA_INSTANCE_PUBLIC_IP << 'EOF'
-                sudo ls -ltr ${env.WORKSPACE}
-                scp ${env.WORKSPACE}/vegetables.service /etc/systemd/system/vegetables.service
+                sudo ls -ltr $WORKSPACE
+                scp $WORKSPACE/vegetables.service /etc/systemd/system/vegetables.service
                 cd ~ 
                 sudo rm -rf fruits-veg_market 
                 cd ~

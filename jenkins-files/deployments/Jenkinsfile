@@ -32,7 +32,7 @@ pipeline {
                 sudo rm -rf fruits-veg_market ;
                 git clone https://github.com/techbleat/fruits-veg_market.git ;
                 cd ~/fruits-veg_market/web ;
-                JAVA_INSTANCE_PUBLIC_IP=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=java-instance" \
+                JAVA_INSTANCE_PUBLIC_IP=\\$(aws ec2 describe-instances --filters "Name=tag:Name,Values=java-instance" \
                 --query "Reservations[0].Instances[0].PublicIpAddress" \
                 --output text);
                 sed -i "s|http://VEG_MACHINE:8080|http://"\\$JAVA_INSTANCE_PUBLIC_IP":8080|g" index.html;

@@ -35,11 +35,11 @@ pipeline {
                 JAVA_INSTANCE_PUBLIC_IP=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=java-instance" \
                 --query "Reservations[0].Instances[0].PublicIpAddress" \
                 --output text);
-                sed -i "s|http://VEG_MACHINE:8080|http://$JAVA_INSTANCE_PUBLIC_IP:9090|g" index.html;
+                sed -i "s|http://VEG_MACHINE:8080|http://'${JAVA_INSTANCE_PUBLIC_IP}':9090|g" index.html;
                 PYTHON_INSTANCE_PUBLIC_IP=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=python-instance" \
                 --query "Reservations[0].Instances[0].PublicIpAddress" \
                 --output text);
-                sed -i "s|http://localhostFRUIT_MACHINE:9000|http://$PYTHON_INSTANCE_PUBLIC_IP:8080|g" index.html;
+                sed -i "s|http://localhostFRUIT_MACHINE:9000|http://${PYTHON_INSTANCE_PUBLIC_IP}:8080|g" index.html;
                 sudo cp ~/fruits-veg_market/web/index.html /var/www/html/index.html'
                 """
                  }
@@ -105,16 +105,3 @@ pipeline {
 
 
 }
-
-
-  JAVA_INSTANCE_PUBLIC_IP=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=java-instance" \
-  --query "Reservations[0].Instances[0].PublicIpAddress" \
-  --output text);
-
-  sed -i "s|http://localhost:9000|http://$JAVA_INSTANCE_PUBLIC_IP:9090|g" index.html;
-
-  PYTHON_INSTANCE_PUBLIC_IP=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=python-instance" \
-  --query "Reservations[0].Instances[0].PublicIpAddress" \
-  --output text);
-
-  sed -i "s|http://localhost:9000|http://$PYTHON_INSTANCE_PUBLIC_IP:8080|g" index.html;

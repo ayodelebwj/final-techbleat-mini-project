@@ -86,7 +86,7 @@ pipeline {
                 sh '''
                  PYTHON_INSTANCE_PUBLIC_IP=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=python-instance" \
                 --query "Reservations[0].Instances[0].PublicIpAddress" \
-                --output text);
+                --output text)
 
                 scp $WORKSPACE/jenkins-files/deployments/fruits.service ubuntu@$PYTHON_INSTANCE_PUBLIC_IP:/tmp
 

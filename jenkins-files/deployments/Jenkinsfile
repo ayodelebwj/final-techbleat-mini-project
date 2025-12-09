@@ -64,7 +64,7 @@ pipeline {
                 
 
 
-                ssh -o StrictHostKeyChecking=no ubuntu@$JAVA_INSTANCE_PUBLIC_IP << 'EOF'
+                ssh -o StrictHostKeyChecking=no ubuntu@$JAVA_INSTANCE_PUBLIC_IP << EOF
                 sudo ls -ltr $WORKSPACE
                 cd ~
                 sudo rm -rf fruits-veg_market

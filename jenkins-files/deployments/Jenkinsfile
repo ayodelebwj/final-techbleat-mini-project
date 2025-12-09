@@ -33,6 +33,7 @@ pipeline {
                  JAVA_INSTANCE_PUBLIC_IP=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=java-instance" \
                 --query "Reservations[0].Instances[0].PublicIpAddress" \
                 --output text) > java_ip.txt
+                cat java_ip.txt
                 scp java_ip.txt ubuntu@$WEB_INSTANCE_PRIVATE_IP:/home/ubuntu/java_ip.txt
                 echo "$JAVA_INSTANCE_PUBLIC_IP"
 

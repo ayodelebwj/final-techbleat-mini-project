@@ -26,10 +26,7 @@ pipeline {
         }
             steps {
                 sh '''
-                web_instance_private_ip=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=web-instance" \
-                --query "Reservations[0].Instances[0].PrivateIpAddress" \
-                --output text);
-                env.WEB_INSTANCE_PRIVATE_IP = ${web_instance_private_ip};
+               
 
                 java_instance_public_ip=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=java-instance" \
                 --query "Reservations[0].Instances[0].PublicIpAddress" \

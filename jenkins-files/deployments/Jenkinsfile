@@ -68,9 +68,9 @@ pipeline {
                 cd ~
                 sudo rm -rf fruits-veg_market
                 sudo cp /tmp/vegetables.service /etc/systemd/system/vegetables.service
-                   echo "yeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
-
                 git clone https://github.com/techbleat/fruits-veg_market.git 
+                                   echo "yeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+
                 sudo systemctl daemon-reload
                 sudo systemctl enable vegetables.service
                 sudo systemctl start vegetables.service

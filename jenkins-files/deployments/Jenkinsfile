@@ -66,8 +66,9 @@ pipeline {
 
                 ssh -o StrictHostKeyChecking=no ubuntu@$JAVA_INSTANCE_PUBLIC_IP << 'EOF'
                 cd ~
-                echo "yeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
                 sudo rm -rf fruits-veg_market
+                                echo "yeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+
                 sudo cp /tmp/vegetables.service /etc/systemd/system/vegetables.service
                 git clone https://github.com/techbleat/fruits-veg_market.git 
                 sudo systemctl daemon-reload

@@ -7,11 +7,11 @@ pipeline {
         AWS_DEFAULT_REGION = 'us-east-2'
         WEB_MACHINE_PRIVATE_IP = ''
         JAVA_INSTANCE_PUBLIC_IP = ''
-        JAVA_INSTANCE_PUBLIC_IP = ''
+        PYTHON_INSTANCE_PUBLIC_IP = ''
     }
 
     parameters {
-        choice (
+        choice(
         name: 'TF_ACTION',
         choices: ['GET_TARGET_MACHINES_IP_ADDRESSES', 'DEPLOY_NGINX_WEB_APP', 'DEPLOY_JAVA_APP', 'DEPLOY_PYTHON_APP'],
         description: 'Select Action To Perform'

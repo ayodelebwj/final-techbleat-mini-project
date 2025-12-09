@@ -10,10 +10,9 @@ pipeline {
     parameters {
         choice(
         name: 'TF_ACTION',
-        choices: ['GET_TARGET_MACHINES_IP_ADDRESSES', 'DEPLOY_NGINX_WEB_APP', 'DEPLOY_JAVA_APP', 'DEPLOY_PYTHON_APP'],
+        choices: ['DEPLOY_JAVA_APP', 'DEPLOY_PYTHON_APP', 'DEPLOY_NGINX_WEB_APP'],
         description: 'Select Action To Perform'
-    )
-
+      )
     }
 
     stages {

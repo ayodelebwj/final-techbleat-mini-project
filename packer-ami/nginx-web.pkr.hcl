@@ -2,7 +2,7 @@
 #Provision Web AMI Templates
 #============================================
 
-data "amazon-parameterstore" "web_ubuntu-params" {
+data "amazon-parameterstore" "web_ubuntu_params" {
   name = "/aws/service/canonical/ubuntu/server/24.04/stable/current/amd64/hvm/ebs-gp3/ami-id"
 }
 

@@ -32,9 +32,9 @@ pipeline {
                 sudo apt install unzip -y
                  JAVA_INSTANCE_PUBLIC_IP=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=java-instance" \
                 --query "Reservations[0].Instances[0].PublicIpAddress" \
-                --output text) >> java_ip.txt
-                cat java_ip.txt
-                scp java_ip.txt ubuntu@$WEB_INSTANCE_PRIVATE_IP:/home/ubuntu/java_ip.txt
+                --output text) >> python_ip.txt
+                cat python_ip.txt
+                scp python_ip.txt ubuntu@$WEB_INSTANCE_PRIVATE_IP:/home/ubuntu/python_ip.txt
                 echo "$JAVA_INSTANCE_PUBLIC_IP"
 
                 PYTHON_INSTANCE_PUBLIC_IP=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=python-instance" \

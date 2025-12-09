@@ -18,7 +18,7 @@ pipeline {
     stages {
         stage ('Deploy Web App Nginx') {
         when {
-            expression {params.TF_ACTION == 'WEB_APP_NGINX'}
+            expression {params.TF_ACTION == 'DEPLOY_NGINX_WEB_APP'}
         }
             steps {
                  sshagent (credentials: ['AWS-SSH-KEY']) {
@@ -48,7 +48,7 @@ pipeline {
 
         stage ('Deploy Java App') {
         when {
-            expression {params.TF_ACTION == 'JAVA_APP'}
+            expression {params.TF_ACTION == 'DEPLOY_JAVA_APP'}
         }
             steps {
                  sshagent (credentials: ['AWS-SSH-KEY']) {
@@ -73,7 +73,7 @@ pipeline {
 
         stage ('Deploy Python App') {
         when {
-            expression {params.TF_ACTION == 'PYTHON_APP'}
+            expression {params.TF_ACTION == 'DEPLOY_PYTHON_APP'}
         }
             steps {
                  sshagent (credentials: ['AWS-SSH-KEY']) {

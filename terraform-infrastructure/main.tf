@@ -28,8 +28,8 @@ resource "aws_security_group" "java_sg" {
 
   ingress {
     description = "JAVA PORT"
-    from_port   = 9090
-    to_port     = 9090
+    from_port   = 8080
+    to_port     = 8080
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -57,8 +57,8 @@ resource "aws_security_group" "python_sg" {
 
   ingress {
     description = "PYTHON PORT"
-    from_port   = 8080
-    to_port     = 8080
+    from_port   = 9000
+    to_port     = 9000
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }

@@ -33,7 +33,7 @@ pipeline {
                  JAVA_INSTANCE_PUBLIC_IP=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=java-instance" \
                 --query "Reservations[0].Instances[0].PublicIpAddress" \
                 --output text)
-                echo "JAVA_INSTANCE_PUBLIC_IP"
+                echo "$JAVA_INSTANCE_PUBLIC_IP"
 
                 PYTHON_INSTANCE_PUBLIC_IP=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=python-instance" \
                 --query "Reservations[0].Instances[0].PublicIpAddress" \

@@ -22,12 +22,12 @@ pipeline {
         }
             steps {
                  sshagent (credentials: ['AWS-SSH-KEY']) {
-                sh """
+                sh '''
                 WEB_INSTANCE_PRIVATE_IP=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=web-instance" \
                 --query "Reservations[0].Instances[0].PrivateIpAddress" \
                 --output text)
 
-                ssh -o StrictHostKeyChecking=no ubuntu@$WEB_INSTANCE_PRIVATE_IP << EOF
+                ssh -o StrictHostKeyChecking=no ubuntu@$WEB_INSTANCE_PRIVATE_IP << 'EOF'
                 cd ~ 
                 sudo apt install nginx -y 
                 sudo systemctl daemon-reload 
@@ -40,7 +40,9 @@ pipeline {
                 sudo cp ~/fruits-veg_market/web/index.html /var/www/html/index.html
                 aws ec2 describe-instances --filters "Name=tag:Name,Values=web-instance" --query "Reservations[0].Instances[0].PublicIpAddress" --output text >> java_public_ip.txt && JAVA_PUBLIC_IP=$(cat java_public_ip.txt) && sudo sed -i "s|http://VEG_MACHINE:8080/vegetables|http://${JAVA_PUBLIC_IP}:8080/vegetables|g” /var/www/html/index.html
                 aws ec2 describe-instances --filters "Name=tag:Name,Values=web-instance" --query "Reservations[0].Instances[0].PublicIpAddress" --output text >> python_public_ip.txt && PYTHON_PUBLIC_IP=$(cat python_public_ip.txt) && sudo sed -i "s|http://FRUIT_MACHINE:9000/fruits|http://${PYTHON_PUBLIC_IP}:9000/fruits|g" /var/www/html/index.html
-                """
+        EOF
+                '''
+        
                  }
             }
         }

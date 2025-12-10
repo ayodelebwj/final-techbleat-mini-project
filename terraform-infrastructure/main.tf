@@ -150,15 +150,20 @@ resource "aws_instance" "python_instance" {
   }
 }
 
+#ACCESS A ROLE FOR WEBSERVER TO ACCESS EC2 RESOURCE
+data "aws_iam_instance_profile" "web-server-role" {
+  name = "techbleat"
+}
+
 # CREATE Web instance
 resource "aws_instance" "web_instance" {
   ami             = data.aws_ami.web-ami.id
   instance_type   = var.web_machine_instance_type             
   key_name        = var.web_machine_key_name             
   security_groups = [aws_security_group.web_sg.name]
+  iam_instance_profile = data.aws_iam_instance_profile.web-server-role.name
 
   tags = {
     Name = var.web_machine_tag_name
   }
 }
-

@@ -24,14 +24,9 @@ variable "java_machine_ingress_port" {
     default = 8080
 }
 
-variable "java_machine_ingress_port" {
-    type = number
-    default = 8080
-}
-
 variable "java_machine_instance_type" {
     type = string
-    default = "t3.micro""
+    default = "t3.micro"
 }
 
 variable "java_machine_key_name" {
@@ -61,7 +56,7 @@ variable "python_machine_ingress_port" {
 
 variable "python_machine_instance_type" {
     type = string
-    default = "t3.micro""
+    default = "t3.micro"
 }
 
 variable "python_machine_key_name" {

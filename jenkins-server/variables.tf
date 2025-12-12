@@ -21,11 +21,6 @@ variable "security_group_ingress_jenkins_port" {
     default = 8080
 }
 
-variable "security_group_ingress_jenkins_port" {
-    type = number
-    default = 8080
-}
-
 variable "security_group_cidr_block" {
     type = string
     default = "0.0.0.0/0"

@@ -10,7 +10,7 @@ pipeline {
     parameters {
         choice(
         name: 'TF_ACTION',
-        choices: ['DEPLOY_JAVA_APP', 'DEPLOY_PYTHON_APP', 'DEPLOY_NGINX_WEB_APP'],
+        choices: ['DEPLOY_PYTHON_APP', 'DEPLOY_NGINX_WEB_APP'],
         description: 'Select Action To Perform'
       )
     }
@@ -20,8 +20,8 @@ pipeline {
         when {
             expression {params.TF_ACTION == 'DEPLOY_NGINX_WEB_APP'}
         }
-            // This step fetches web server private ip installs and starts nginx fetches public ips
-            // of java and python app servers and sed command it into index.html file      
+            // This step fetches web server private ip installs and starts nginx fetches public ip
+            // of python app server and sed command it into index.html file      
             steps {
                  sshagent (credentials: ['AWS-SSH-KEY']) {
                 sh '''
@@ -37,50 +37,16 @@ pipeline {
                 sudo systemctl start nginx 
                 sudo rm -rf fruits-veg_market 
                 cd ~
-                git clone https://github.com/techbleat/fruits-veg_market.git 
-                cd ~/fruits-veg_market/web 
-                sudo cp ~/fruits-veg_market/web/index.html /var/www/html/index.html
-                
-                aws ec2 describe-instances --filters "Name=tag:Name,Values=java-instance" --query "Reservations[0].Instances[0].PublicIpAddress" --output text >> java_public_ip.txt 
-                JAVA_PUBLIC_IP=$(cat java_public_ip.txt) 
-                sudo sed -i "s|http://VEG_MACHINE:8080/vegetables|http://${JAVA_PUBLIC_IP}:8080/vegetables|g" /var/www/html/index.html
+                git clone --branch mini-project --single-branch https://github.com/techbleat/fruits-veg_market.git
+                cd ~/fruits-veg_market/frontend 
+                sudo cp ~/fruits-veg_market/frontend/index.html /var/www/html/index.html
                 
                 aws ec2 describe-instances --filters "Name=tag:Name,Values=python-instance" --query "Reservations[0].Instances[0].PublicIpAddress" --output text >> python_public_ip.txt 
                 PYTHON_PUBLIC_IP=$(cat python_public_ip.txt) 
-                sudo sed -i "s|http://FRUIT_MACHINE:9000/fruits|http://${PYTHON_PUBLIC_IP}:9000/fruits|g" /var/www/html/index.html
-                '''
-        
-                 }
-            }
-        }
-
-        stage ('Deploy Java App') {
-        when {
-            expression {params.TF_ACTION == 'DEPLOY_JAVA_APP'}
-        }
-            // This step fetches java app server public ip, ssh into it and copy java service 
-            // file into it, it then clones the repo and starts the java app server    
-            steps {
-                 sshagent (credentials: ['AWS-SSH-KEY']) {
-                sh '''
-                JAVA_INSTANCE_PUBLIC_IP=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=java-instance" \
-                --query "Reservations[0].Instances[0].PublicIpAddress" \
-                --output text) 
-
-                scp -o StrictHostKeyChecking=no $WORKSPACE/jenkins-files/deployments/vegetables.service  ubuntu@$JAVA_INSTANCE_PUBLIC_IP:/tmp
-                
-                ssh -o StrictHostKeyChecking=no ubuntu@$JAVA_INSTANCE_PUBLIC_IP << EOF
-                cd ~
-                sudo rm -rf fruits-veg_market
-                git clone https://github.com/techbleat/fruits-veg_market.git
-                sudo cp /tmp/vegetables.service /etc/systemd/system/vegetables.service
-                sudo systemctl daemon-reload
-                sudo systemctl enable vegetables.service
-                sudo systemctl start vegetables.service
+                sudo sed -i "s|http://FRUIT_MACHINE:8000/fruits|http://${PYTHON_PUBLIC_IP}:8000/fruits|g" /var/www/html/index.html
                 '''
                  }
             }
-
         }
 
         // This stage fetches python app server public ip, ssh into it, copies python service 
@@ -103,8 +69,8 @@ pipeline {
                 sudo cp /tmp/fruits.service /etc/systemd/system/fruits.service
                 cd ~ 
                 sudo rm -rf fruits-veg_market 
-                git clone https://github.com/techbleat/fruits-veg_market.git 
-                cd ~/fruits-veg_market/python
+                git clone --branch mini-project --single-branch https://github.com/techbleat/fruits-veg_market.git
+                cd ~/fruits-veg_market/backend-api
                 python3 -m venv .venv
                 source .venv/bin/activate
                 python -m pip install -r requirements.txt

@@ -94,3 +94,54 @@ variable "web_machine_tag_name" {
 }
 
 
+variable "db_identifier" {
+default = ""
+}
+
+variable "db_engine" {
+    default = ""
+}
+
+variable "db_engine_version" {
+    default = ""
+}
+
+variable "db_engine_version" {
+    default = ""
+}
+
+variable "db_engine_class" {
+    default = ""
+}
+
+variable "db_name" {
+    default = ""
+}
+
+variable "db_username" {
+    default = ""
+}
+
+variable "db_password" {
+    default = ""
+}
+
+variable "db_environment" {
+    default = ""
+}
+
+variable "db_sg_name" {
+    default =""
+  }
+
+variable "db_sg_ingress_from_port" {
+    default = ""
+  }
+
+variable "db_sg_ingress_to_port" {
+    default = ""
+  }
+
+variable "db_sg_ingress_to_port" {
+    default = ""
+  }

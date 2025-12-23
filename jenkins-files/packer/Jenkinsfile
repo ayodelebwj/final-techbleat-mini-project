@@ -10,7 +10,7 @@ pipeline {
     parameters {
         choice(
         name: 'TF_ACTION',
-        choices: ['WEB_AMI', 'JAVA_AMI', 'PYTHON_AMI'],
+        choices: ['WEB_AMI', 'PYTHON_AMI'],
         description: 'Select AMI To Create'
     )
 
@@ -32,23 +32,6 @@ pipeline {
                 }
             }
 
-        }
-
-        // This stage builds the java app AMI using Packer 
-
-        stage ('Create Java AMI') {
-        when {
-            expression {params.TF_ACTION == 'JAVA_AMI'}
-        }
-            steps {
-                dir ('packer-ami') {
-                 sh 'ls -ltr'
-                 sh 'packer init .'
-                 sh 'packer fmt .'
-                 sh 'packer validate .'
-                 sh 'packer build java.pkr.hcl'
-               }
-            }
         }
 
         // This stage builds the python app AMI using Packer 

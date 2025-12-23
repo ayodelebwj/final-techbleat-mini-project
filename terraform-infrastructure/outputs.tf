@@ -1,10 +1,4 @@
-#======================================================
-#OUTPUTS JAVA PUBLIC IP ADDRESS
-#======================================================
-output "java_instance_public_ip" {
-  description = "public ip for the java instance"
-  value       = aws_instance.java_instance.public_ip
-}
+
 
 #======================================================
 #OUTPUTS PYTHON PUBLIC IP ADDRESS

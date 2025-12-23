@@ -18,7 +18,7 @@ source "amazon-ebs" "python-vm-source" {
   region          = "us-east-2"
   instance_type   = "t3.micro"
   ssh_username    = "ubuntu"
-  source_ami    = data.amazon-parameterstore.python_ubuntu_params.value
+  source_ami      = data.amazon-parameterstore.python_ubuntu_params.value
   ami_name        = "python-ami"
 }
 
@@ -34,8 +34,7 @@ build {
     inline_shebang = "/bin/bash -xe"
     inline = [
       "sudo apt update -y",
-      "sudo apt install python3 python3-pip -y",
-      "sudo apt install python3-venv -y",
+      "sudo apt install python3 python3-pip python3-venv -y",
       "exit 0"
     ]
   }

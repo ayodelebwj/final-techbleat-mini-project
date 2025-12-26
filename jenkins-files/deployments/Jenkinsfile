@@ -43,8 +43,10 @@ pipeline {
                 
                 aws ec2 describe-instances --filters "Name=tag:Name,Values=python-instance" --query "Reservations[0].Instances[0].PublicIpAddress" --output text >> python_public_ip.txt 
                 PYTHON_PUBLIC_IP=$(cat python_public_ip.txt) 
-                sudo sed -i "s|http://FRUIT_MACHINE:8000/fruits|http://${PYTHON_PUBLIC_IP}:8000/fruits|g" /var/www/html/index.html
+                sudo sed -i "s|http://localhost:8000/api/products|http://${PYTHON_PUBLIC_IP}:8000/api/products|g" /var/www/html/index.html
                 '''
+
+                
                  }
             }
         }

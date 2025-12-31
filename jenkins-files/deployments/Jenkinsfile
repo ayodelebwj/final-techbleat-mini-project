@@ -33,7 +33,7 @@ pipeline {
                 scp -o StrictHostKeyChecking=no $WORKSPACE/jenkins-files/deployments/nginx-deploy.sh ubuntu@$WEB_INSTANCE_PRIVATE_IP:/home/ubuntu/nginx-deploy.sh
 
                 ssh -o StrictHostKeyChecking=no ubuntu@$WEB_INSTANCE_PRIVATE_IP << 'EOF'
-                sudo chmod nginx-deploy.sh
+                sudo chmod +x nginx-deploy.sh
                 ./nginx-deploy.sh
                 '''
 

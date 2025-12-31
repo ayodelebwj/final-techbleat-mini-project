@@ -11,7 +11,7 @@ security_group_cidr_block = "0.0.0.0/0"
 #=========================================
 python_machine_security_group_name = "python-sg"
 
-python_machine_ingress_port = 9000
+python_machine_ingress_port = 8000
 
 python_machine_instance_type = "t3.micro"
 

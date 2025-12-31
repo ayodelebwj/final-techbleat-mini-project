@@ -18,7 +18,7 @@
                 aws ec2 describe-instances --filters "Name=tag:Name,Values=python-instance" --query "Reservations[0].Instances[0].PrivateIpAddress" --output text >> python_private_ip.txt 
                 read -r PYTHON_PRIVATE_IP < python_private_ip.txt 
                 
-                sudo sed -i "s|http://app-server-IP:8000|http://${PYTHON_PRIVATE_IP}:8000|g" /home/ubuntu/fruits-veg_market/frontend/nginx.conf_sample
+                sudo sed -i "s|http://app-server-ip:8000|http://${PYTHON_PRIVATE_IP}:8000|g" /home/ubuntu/fruits-veg_market/frontend/nginx.conf_sample
 
                 awk '
                 /location \/api\/ {/ {copy=1; brace=1; print; next}

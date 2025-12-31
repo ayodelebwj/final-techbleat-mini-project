@@ -59,7 +59,7 @@ pipeline {
                 scp -o StrictHostKeyChecking=no $WORKSPACE/jenkins-files/deployments/fruits.service ubuntu@$PYTHON_INSTANCE_PRIVATE_IP:/tmp/fruits.service
                 scp -o StrictHostKeyChecking=no $WORKSPACE/jenkins-files/deployments/python-deploy.sh ubuntu@$PYTHON_INSTANCE_PRIVATE_IP:/home/ubuntu/python-deploy.sh
 
-                ssh -o StrictHostKeyChecking=no ubuntu@"$PYTHON_INSTANCE_PUBLIC_IP" << EOF
+                ssh -o StrictHostKeyChecking=no ubuntu@$PYTHON_INSTANCE_PRIVATE_IP << EOF
                 sudo chmod +x python-deploy.sh
                 ./python-deploy.sh
                 '''

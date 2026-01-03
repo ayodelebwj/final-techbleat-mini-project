@@ -33,7 +33,7 @@
 
                 if ! grep -q "location /api/" /etc/nginx/sites-enabled/default; then
                     awk -v block="/tmp/api_block.conf" '
-                    /server {/ && !done {
+                    /listen [::]:80;/ && !done {
                         print
                         system("cat " block)
                         done=1

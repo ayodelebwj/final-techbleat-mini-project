@@ -26,7 +26,7 @@ pipeline {
                  sshagent (credentials: ['AWS-SSH-KEY']) {
                 sh '''
                 WEB_INSTANCE_PRIVATE_IP=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=web-instance" \
-                --query "Reservations[0].Instances[0].PrivateIpAddress" \
+                --query 'Reservations[0].Instances[0].PrivateIpAddress' \
                 --output text)
 
 
@@ -53,11 +53,9 @@ pipeline {
                  sshagent (credentials: ['AWS-SSH-KEY']) {
                 sh '''
                 PYTHON_INSTANCE_PRIVATE_IP=$(aws ec2 describe-instances \
-  --filters "Name=tag:Name,Values=python-instance" \
-  --query "Reservations[].Instances[].PrivateIpAddress" \
-  --output text)
-
-
+                --filters "Name=tag:Name,Values=python-instance" \
+                --query "Reservations[].Instances[].PrivateIpAddress" \
+                --output text)
 
 
                 scp -o StrictHostKeyChecking=no $WORKSPACE/jenkins-files/deployments/fruits.service ubuntu@$PYTHON_INSTANCE_PRIVATE_IP:/tmp/fruits.service

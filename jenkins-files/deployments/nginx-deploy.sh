@@ -20,9 +20,10 @@
                 
                 sudo sed -i "s|http://app-server-IP:8000|http://${PYTHON_PRIVATE_IP}:8000|g" /home/ubuntu/fruits-veg_market/frontend/nginx.conf_sample
 
-                sudo sed -i "s|listen 80 default_server|#listen 80 default_server|g" /etc/nginx/sites-enabled/default
+                #sudo sed -i "s|listen 80 default_server|#listen 80 default_server|g" /etc/nginx/sites-enabled/default
 
-                sudo sed -i "s|listen [::]:80 default_server;|#listen [::]:80 default_server;|g" /etc/nginx/sites-enabled/default
+                
+                #sudo sed -i "s|listen [::]:80 default_server;|#listen [::]:80 default_server;|g" /etc/nginx/sites-enabled/default
 
                 awk '
                 /location \/api\/ {/ {copy=1; brace=1; print; next}
@@ -48,5 +49,6 @@
                  && sudo mv target.new /etc/nginx/sites-enabled/default
                 fi
 
+                sysctl net.ipv6.bindv6only
                 sudo systemctl daemon-reload
                 sudo systemctl restart nginx

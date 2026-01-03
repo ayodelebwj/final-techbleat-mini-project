@@ -22,7 +22,7 @@
 
                 sudo sed -i "s|listen 80 default_server|#listen 80 default_server|g" /etc/nginx/sites-enabled/default
 
-                sudo sed -i "s|listen [::]:80 default_server|#listen [::]:80 default_server|g" /etc/nginx/sites-enabled/default
+                sudo sed -i "s|listen [::]:80 default_server;|#listen [::]:80 default_server;|g" /etc/nginx/sites-enabled/default
 
                 awk '
                 /location \/api\/ {/ {copy=1; brace=1; print; next}

@@ -47,3 +47,6 @@
                  ' /etc/nginx/sites-enabled/default > target.new \
                  && sudo mv target.new /etc/nginx/sites-enabled/default
                 fi
+
+                sudo systemctl daemon-reload
+                sudo systemctl restart nginx

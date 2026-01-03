@@ -316,6 +316,11 @@ data "aws_ami" "web-ami" {
   }
 }
 
+#ACCESS A ROLE FOR WEBSERVER TO ACCESS EC2 RESOURCE
+data "aws_iam_instance_profile" "web-server-role" {
+  name = "techbleat"
+}
+
 # CREATE Python instance
 resource "aws_instance" "python_instance" {
   ami                     = data.aws_ami.python-ami.id
@@ -323,15 +328,12 @@ resource "aws_instance" "python_instance" {
   key_name                = var.python_machine_key_name
   security_groups         = [aws_security_group.python_sg.id]
   subnet_id               = aws_subnet.private_1.id
+  iam_instance_profile    = data.aws_iam_instance_profile.web-server-role.name
+
 
   tags = {
     Name = var.python_machine_tag_name
   }
-}
-
-#ACCESS A ROLE FOR WEBSERVER TO ACCESS EC2 RESOURCE
-data "aws_iam_instance_profile" "web-server-role" {
-  name = "techbleat"
 }
 
 # CREATE Web instance

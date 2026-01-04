@@ -33,6 +33,7 @@ build {
     inline_shebang = "/bin/bash -xe"
     inline = [
       "sudo apt update -y",
+      "sudo apt install certbot python3-certbot-nginx -y",
       "sudo apt install unzip -y",
       "curl 'https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip' -o 'awscliv2.zip'",
       "unzip awscliv2.zip",

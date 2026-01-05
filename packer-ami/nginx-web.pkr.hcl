@@ -18,7 +18,7 @@ source "amazon-ebs" "web-vm-source" {
   region        = "us-east-2"
   instance_type = "t3.micro"
   ssh_username  = "ubuntu"
-  source_ami    = data.amazon-parameterstore.web_ubuntu_params.value
+  source_ami    =  data.amazon-parameterstore.web_ubuntu_params.value
   ami_name      = "web-ami"
 }
 

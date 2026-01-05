@@ -12,35 +12,6 @@ variable "security_group_cidr_block" {
 }
 
 #=========================================
-#JAVA APP MACHINE VARIABLES
-#=========================================
-variable "java_machine_security_group_name" {
-  type    = string
-  default = "java-sg"
-}
-
-variable "java_machine_ingress_port" {
-  type    = number
-  default = 8080
-}
-
-variable "java_machine_instance_type" {
-  type    = string
-  default = "t3.micro"
-}
-
-variable "java_machine_key_name" {
-  type    = string
-  default = "ohio-kp"
-
-}
-
-variable "java_machine_tag_name" {
-  type    = string
-  default = "java-instance"
-}
-
-#=========================================
 #PYTHON APP MACHINE VARIABLES
 #=========================================
 variable "python_machine_security_group_name" {

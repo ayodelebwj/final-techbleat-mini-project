@@ -14,7 +14,6 @@ provider "aws" {
   region = var.region
 }
 
-
 #======================================================================
 #JENKINS SG RESOURCE BLOCK TO ALLOW PORTS 22 AND 8080
 #======================================================================
@@ -46,7 +45,6 @@ resource "aws_security_group" "jenkins_sg" {
     cidr_blocks = [var.security_group_cidr_block]
   }
 }
-
 
 #======================================================================
 #RETRIEVES UBUNTU AMI FROM AWS STORE TO PROVISION JENKINS INSTANCE

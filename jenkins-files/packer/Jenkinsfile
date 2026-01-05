@@ -11,12 +11,10 @@ pipeline {
         choice(
         name: 'TF_ACTION',
         choices: ['WEB_AMI','PYTHON_AMI'],
-        description: 'Select AMI To Create'
-    )
-
+        description: 'Select AMI To Create')
     }
 
-    // This stage builds the nginx web server AMI using Packer 
+    // BUILDS NGINX WEB SERVER AMI USING PACKER 
     stages {
         stage ('Create Web AMI') {
         when {
@@ -31,10 +29,9 @@ pipeline {
                  sh 'packer build nginx-web.pkr.hcl'
                 }
             }
-
         }
 
-        // This stage builds the python app AMI using Packer 
+        // BUILD THE PYTHON AMI USING PACKER 
         stage ('Create Python AMI') {
         when {
             expression {params.TF_ACTION == 'PYTHON_AMI'}

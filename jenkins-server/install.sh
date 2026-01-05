@@ -1,7 +1,5 @@
 #!/bin/bash
-#========================================
 #THIS COMMANDS CREATES THE JENKINS SERVER
-#========================================
 terraform init
 terraform fmt
 terraform validate

@@ -17,8 +17,7 @@ pipeline {
     }
 
     stages {
-        // This stage applies the terraform plan command to see 
-        // changes to be made to the infrstructure 
+        // EXECUTE TERRAFORM PLAN COMMAND
         stage ('Terraform Plan') {
         when {
             expression {params.TF_ACTION == 'PLAN'}
@@ -33,8 +32,7 @@ pipeline {
             }
         }
 
-        // This stage applies the terraform apply command to the 
-        // configuration file to build the infrastructure
+        // EXECUTE TERRAFORM APPLY COMMAND
         stage ('Terraform Apply') {
         when {
             expression {params.TF_ACTION == 'APPLY'}
@@ -49,8 +47,7 @@ pipeline {
             }
         }
 
-        // This stage applies the terraform destroy command to the 
-        // configuration file to destroy the built infrastructure
+        // EXECUTE TERRAFORM DESTROY COMMAND
         stage ('Terraform Destroy') {
         when {
             expression {params.TF_ACTION == 'DESTROY'}

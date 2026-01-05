@@ -3,13 +3,10 @@ variable "region" {
   default = "us-east-2"
 }
 
-
 variable "security_group_name" {
   type    = string
   default = "jenkins-sg"
 }
-
-
 
 variable "security_group_ingress_ssh_port" {
   type    = number

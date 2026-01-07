@@ -8,30 +8,7 @@ pipeline {
     }
 
     stages {  
-        stage ('Create Web Server AMI') {
-            steps {
-                dir ('packer-ami') {
-                 sh 'ls -ltr'
-                 sh 'packer init .'
-                 sh 'packer fmt .'
-                 sh 'packer validate .'
-                 sh 'packer build nginx-web.pkr.hcl'
-                }
-            }
-        }
-
-        stage ('Create Python Server AMI') {
-            steps {
-                dir ('packer-ami') {
-                 sh 'ls -ltr'
-                 sh 'packer init .'
-                 sh 'packer fmt .'
-                 sh 'packer validate .'
-                 sh 'packer build python.pkr.hcl'
-                }
-            }
-
-        }
+        
 
         stage ('Create Infrastructure') { 
             steps {

@@ -11,20 +11,6 @@ variable "security_group_cidr_block" {
   default = "0.0.0.0/0"
 }
 
-#=========================================
-#PYTHON APP MACHINE VARIABLES
-#=========================================
-variable "python_machine_security_group_name" {
-  type    = string
-  default = "python-sg"
-}
-
-variable "python_machine_ingress_port" {
-  type    = number
-  default = 9000
-}
-
-
 variable "python_machine_instance_type" {
   type    = string
   default = "t3.micro"
@@ -39,14 +25,6 @@ variable "python_machine_key_name" {
 variable "python_machine_tag_name" {
   type    = string
   default = "python-instance"
-}
-
-#=========================================
-#WEB SERVER MACHINE VARIABLES
-#=========================================
-variable "web_machine_security_group_name" {
-  type    = string
-  default = "web-sg"
 }
 
 variable "web_machine_instance_type" {
@@ -64,9 +42,6 @@ variable "web_machine_tag_name" {
   default = "web-instance"
 }
 
-#=========================================
-#DATABASE VARIABLES
-#=========================================
 variable "db_identifier" {
   default = ""
 }
@@ -100,14 +75,6 @@ variable "db_environment" {
 }
 
 variable "db_sg_name" {
-  default = ""
-}
-
-variable "db_sg_ingress_from_port" {
-  default = ""
-}
-
-variable "db_sg_ingress_to_port" {
   default = ""
 }
 

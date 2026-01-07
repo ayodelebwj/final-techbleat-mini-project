@@ -16,8 +16,8 @@ provider "aws" {
 resource "aws_vpc" "techbleatvpc" {
   cidr_block = var.vpc-cidr
 
-  enable_dns_support   = true   # DNS resolution
-  enable_dns_hostnames = true   # DNS hostnames (REQUIRED for RDS)
+  enable_dns_support   = true # DNS resolution
+  enable_dns_hostnames = true # DNS hostnames (REQUIRED for RDS)
 
   tags = {
     Name = var.vpc-name
@@ -182,7 +182,7 @@ resource "aws_lb_target_group_attachment" "tg-registered-targets" {
   target_group_arn = aws_lb_target_group.web-app-tg.arn
   target_id        = aws_instance.web_instance.id
   port             = 80
-  depends_on = [aws_instance.web_instance]
+  depends_on       = [aws_instance.web_instance]
 }
 
 resource "aws_lb_listener" "app_listener_HTTP" {
@@ -221,20 +221,20 @@ resource "aws_security_group" "web_sg" {
   }
 
   ingress {
-    description     = "HTTP PORT"
-    from_port       = 80
-    to_port         = 80
-    protocol        = "tcp"
+    description = "HTTP PORT"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
     #security_groups = [aws_security_group.alb_sg.id]
-    cidr_blocks = [var.security_group_cidr_block] 
+    cidr_blocks = [var.security_group_cidr_block]
 
   }
 
   ingress {
-    description     = "HTTPS PORT"
-    from_port       = 443
-    to_port         = 443
-    protocol        = "tcp"
+    description = "HTTPS PORT"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
     cidr_blocks = [var.security_group_cidr_block]
     #security_groups = [aws_security_group.alb_sg.id]
   }
@@ -263,8 +263,8 @@ resource "aws_security_group" "python_sg" {
 
   ingress {
     description     = "PYTHON PORT"
-    from_port       = var.python_machine_ingress_port 
-    to_port         = var.python_machine_ingress_port 
+    from_port       = var.python_machine_ingress_port
+    to_port         = var.python_machine_ingress_port
     protocol        = "tcp"
     security_groups = [aws_security_group.web_sg.id]
   }
@@ -283,7 +283,7 @@ resource "aws_security_group" "jenkins_sg" {
   description = "Allow Jenkins traffic"
   vpc_id      = aws_vpc.techbleatvpc.id
 
- ingress {
+  ingress {
     description = "SSH"
     from_port   = 22
     to_port     = 22
@@ -292,9 +292,9 @@ resource "aws_security_group" "jenkins_sg" {
   }
 
   ingress {
-    from_port       = var.jenkins_machine_ingress_port
-    to_port         = var.jenkins_machine_ingress_port
-    protocol        = "tcp"
+    from_port   = var.jenkins_machine_ingress_port
+    to_port     = var.jenkins_machine_ingress_port
+    protocol    = "tcp"
     cidr_blocks = [var.security_group_cidr_block]
   }
 

@@ -29,7 +29,7 @@ variable "public-subnet-2-cidr" {
   default = "10.0.2.0/24"
 }
 
-variable "public-subnet-1-name" {
+variable "public-subnet-2-name" {
   type    = string
   default = "public_2"
 }
@@ -91,7 +91,7 @@ variable "db_sg_ingress_to_port" {
 
 
 #JENKINS VARIABLES
- variable "jenkins_machine_ingress_port" {
+variable "jenkins_machine_ingress_port" {
   type    = number
   default = 8080
 }

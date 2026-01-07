@@ -7,48 +7,8 @@ pipeline {
         AWS_DEFAULT_REGION = 'us-east-2'
     }
 
-    parameters {
-        choice(
-        name: 'TF_ACTION',
-        choices: ['DEPLOY_PYTHON_APP', 'DEPLOY_NGINX_WEB_APP'],
-        description: 'Select Action To Perform'
-      )
-    }
-
-    stages {
-        stage ('Deploy Web App Nginx') {
-        when {
-            expression {params.TF_ACTION == 'DEPLOY_NGINX_WEB_APP'}
-        }
-            // This step fetches web server private ip installs and starts nginx fetches public ip
-            // of python app server and sed command it into index.html file      
-            steps {
-                 sshagent (credentials: ['AWS-SSH-KEY']) {
-                sh '''
-                WEB_INSTANCE_PRIVATE_IP=$(
-                aws ec2 describe-instances \
-                --filters "Name=tag:Name,Values=web-instance" \
-                --query 'Reservations[].Instances[].PrivateIpAddress | [0]' \
-                --output text)
-                scp -o StrictHostKeyChecking=no $WORKSPACE/jenkins-files/deployments/nginx-deploy.sh ubuntu@$WEB_INSTANCE_PRIVATE_IP:/home/ubuntu/nginx-deploy.sh
-                scp -o StrictHostKeyChecking=no $WORKSPACE/jenkins-files/deployments/namecheap-ddns.sh ubuntu@$WEB_INSTANCE_PRIVATE_IP:/home/ubuntu/namecheap-ddns.sh
-                scp -o StrictHostKeyChecking=no $WORKSPACE/jenkins-files/deployments/update_dns_a_record.sh ubuntu@$WEB_INSTANCE_PRIVATE_IP:/home/ubuntu/update_dns_a_record.sh
-                scp -o StrictHostKeyChecking=no $WORKSPACE/jenkins-files/deployments/obtain_ssl_certificate.sh ubuntu@$WEB_INSTANCE_PRIVATE_IP:/home/ubuntu/obtain_ssl_certificate.sh
-                ssh -o StrictHostKeyChecking=no ubuntu@$WEB_INSTANCE_PRIVATE_IP << 'EOF'
-                sudo chmod +x nginx-deploy.sh
-                ./nginx-deploy.sh
-                '''
-                 }
-            }
-        }
-
-        // This stage fetches python app server public ip, ssh into it, copies python service 
-        // file into it and activate important binaries. it then clones the repo and starts 
-        // the python app server    
+    stages {  
         stage ('Deploy Python App') {
-        when {
-            expression {params.TF_ACTION == 'DEPLOY_PYTHON_APP'}
-        }
             steps {
                  sshagent (credentials: ['AWS-SSH-KEY']) {
                 sh '''
@@ -64,7 +24,60 @@ pipeline {
                 '''
                  }
             }
+        }
 
+        stage ('Deploy Nginx Web App') {     
+            steps {
+                 sshagent (credentials: ['AWS-SSH-KEY']) {
+                sh '''
+                WEB_INSTANCE_PRIVATE_IP=$(
+                aws ec2 describe-instances \
+                --filters "Name=tag:Name,Values=web-instance" \
+                --query 'Reservations[].Instances[].PrivateIpAddress | [0]' \
+                --output text)
+                scp -o StrictHostKeyChecking=no $WORKSPACE/jenkins-files/deployments/nginx-deploy.sh ubuntu@$WEB_INSTANCE_PRIVATE_IP:/home/ubuntu/nginx-deploy.sh
+                ssh -o StrictHostKeyChecking=no ubuntu@$WEB_INSTANCE_PRIVATE_IP << 'EOF'
+                sudo chmod +x nginx-deploy.sh
+                ./nginx-deploy.sh
+                '''
+                 }
+            }
+        }
+
+        stage ('Update DNS A Record') {   
+            steps {
+                 sshagent (credentials: ['AWS-SSH-KEY']) {
+                sh '''
+                WEB_INSTANCE_PRIVATE_IP=$(
+                aws ec2 describe-instances \
+                --filters "Name=tag:Name,Values=web-instance" \
+                --query 'Reservations[].Instances[].PrivateIpAddress | [0]' \
+                --output text)
+                scp -o StrictHostKeyChecking=no $WORKSPACE/jenkins-files/deployments/namecheap-ddns.sh ubuntu@$WEB_INSTANCE_PRIVATE_IP:/home/ubuntu/namecheap-ddns.sh
+                ssh -o StrictHostKeyChecking=no ubuntu@$WEB_INSTANCE_PRIVATE_IP << 'EOF'
+                sudo chmod +x namecheap-ddns.sh
+                ./namecheap-ddns.sh
+                '''
+                 }
+            }
+        }
+
+        stage ('Obtain SSL Certificate') {    
+            steps {
+                 sshagent (credentials: ['AWS-SSH-KEY']) {
+                sh '''
+                WEB_INSTANCE_PRIVATE_IP=$(
+                aws ec2 describe-instances \
+                --filters "Name=tag:Name,Values=web-instance" \
+                --query 'Reservations[].Instances[].PrivateIpAddress | [0]' \
+                --output text)
+                scp -o StrictHostKeyChecking=no $WORKSPACE/jenkins-files/deployments/obtain_ssl_certificate.sh ubuntu@$WEB_INSTANCE_PRIVATE_IP:/home/ubuntu/obtain_ssl_certificate.sh
+                ssh -o StrictHostKeyChecking=no ubuntu@$WEB_INSTANCE_PRIVATE_IP << 'EOF'
+                sudo chmod +x obtain_ssl_certificate.sh
+                ./obtain_ssl_certificate.sh
+                '''
+                 }
+            }
         }
     }
 

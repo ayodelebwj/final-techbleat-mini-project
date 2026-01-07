@@ -32,6 +32,8 @@ pipeline {
                 --output text)
                 scp -o StrictHostKeyChecking=no $WORKSPACE/jenkins-files/deployments/nginx-deploy.sh ubuntu@$WEB_INSTANCE_PRIVATE_IP:/home/ubuntu/nginx-deploy.sh
                 scp -o StrictHostKeyChecking=no $WORKSPACE/jenkins-files/deployments/namecheap-ddns.sh ubuntu@$WEB_INSTANCE_PRIVATE_IP:/home/ubuntu/namecheap-ddns.sh
+                scp -o StrictHostKeyChecking=no $WORKSPACE/jenkins-files/deployments/update_dns_a_record.sh ubuntu@$WEB_INSTANCE_PRIVATE_IP:/home/ubuntu/update_dns_a_record.sh
+                scp -o StrictHostKeyChecking=no $WORKSPACE/jenkins-files/deployments/obtain_ssl_certificate.sh ubuntu@$WEB_INSTANCE_PRIVATE_IP:/home/ubuntu/obtain_ssl_certificate.sh
                 ssh -o StrictHostKeyChecking=no ubuntu@$WEB_INSTANCE_PRIVATE_IP << 'EOF'
                 sudo chmod +x nginx-deploy.sh
                 ./nginx-deploy.sh

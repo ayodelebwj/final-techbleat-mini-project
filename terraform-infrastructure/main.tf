@@ -73,19 +73,19 @@ data "aws_subnet" "private-1" {
 #Retrieve Web Security Group
 data "aws_security_group" "web_sg" {
   name   = "web-sg"
-  vpc_id = data.aws_vpc.existing.id
+  vpc_id = data.aws_vpc.techbleat-vpc.id
 }
 
 #Retrieve Python Security Group
 data "aws_security_group" "python_sg" {
   name   = "python-sg"
-  vpc_id = data.aws_vpc.existing.id
+  vpc_id = data.aws_vpc.techbleat-vpc.id
 }
 
 #Retrieve DB Security Group
 data "aws_security_group" "db_sg" {
   name   = "postgres-sg"
-  vpc_id = data.aws_vpc.existing.id
+  vpc_id = data.aws_vpc.techbleat-vpc.id
 }
 
 

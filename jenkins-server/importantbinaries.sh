@@ -42,5 +42,5 @@ sudo fallocate -l 2G /swapfile
 sudo chmod 600 /swapfile
 sudo mkswap /swapfile
 sudo swapon /swapfile
-sed -i 's|^#JAVA_ARGS="-Xmx256m"|JAVA_ARGS="-Xms256m -Xmx512m -XX:+UseG1GC"|' sudo nano /etc/default/jenkins
+grep -q '^JAVA_ARGS=' /etc/default/jenkins || echo 'JAVA_ARGS="-Xms256m -Xmx512m -XX:+UseG1GC"' | sudo tee -a /etc/default/jenkins
 sudo systemctl restart jenkins

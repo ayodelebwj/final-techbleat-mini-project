@@ -36,3 +36,11 @@ sudo apt install unzip -y
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 unzip awscliv2.zip
 sudo ./aws/install
+
+#INCREASE JENKINS CAPACITY
+sudo fallocate -l 2G /swapfile
+sudo chmod 600 /swapfile
+sudo mkswap /swapfile
+sudo swapon /swapfile
+sed -i 's|^#JAVA_ARGS="-Xmx256m"|JAVA_ARGS="-Xms256m -Xmx512m -XX:+UseG1GC"|' sudo nano /etc/default/jenkins
+sudo systemctl restart jenkins

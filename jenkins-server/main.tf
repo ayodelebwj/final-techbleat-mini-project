@@ -36,7 +36,7 @@ resource "aws_subnet" "public_1" {
   vpc_id                  = aws_vpc.techbleatvpc.id
   cidr_block              = var.public-subnet-1-cidr
   map_public_ip_on_launch = true
-  availability_zone       = "us-east-2a"
+  availability_zone       = var.public-subnet-1-az
 
   tags = {
     Name = var.public-subnet-1-name
@@ -47,7 +47,7 @@ resource "aws_subnet" "public_2" {
   vpc_id                  = aws_vpc.techbleatvpc.id
   cidr_block              = var.public-subnet-2-cidr
   map_public_ip_on_launch = true
-  availability_zone       = "us-east-2b"
+  availability_zone       = var.public-subnet-2-az
 
   tags = {
     Name = var.public-subnet-2-name
@@ -58,7 +58,7 @@ resource "aws_subnet" "public_2" {
 resource "aws_subnet" "private_1" {
   vpc_id            = aws_vpc.techbleatvpc.id
   cidr_block        = var.private-subnet-1-cidr
-  availability_zone = "us-east-2a"
+  availability_zone = var.private-subnet-1-az
 
   tags = {
     Name = var.private-subnet-1-name
@@ -68,7 +68,7 @@ resource "aws_subnet" "private_1" {
 resource "aws_subnet" "private_2" {
   vpc_id            = aws_vpc.techbleatvpc.id
   cidr_block        = var.private-subnet-2-cidr
-  availability_zone = "us-east-2b"
+  availability_zone = var.private-subnet-2-az
 
   tags = {
     Name = var.private-subnet-2-name
@@ -145,21 +145,21 @@ resource "aws_security_group" "alb_sg" {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = [var.security_group_cidr_block]
   }
 
   ingress {
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = [var.security_group_cidr_block]
   }
 
   egress {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = [var.security_group_cidr_block]
   }
 }
 
@@ -170,16 +170,16 @@ resource "aws_security_group" "web_sg" {
 
   ingress {
     description = "SSH"
-    from_port   = 22
-    to_port     = 22
+    from_port   = var.ssh_ingress_port
+    to_port     = var.ssh_ingress_port
     protocol    = "tcp"
     cidr_blocks = [var.security_group_cidr_block]
   }
 
   ingress {
     description = "HTTP PORT"
-    from_port   = 80
-    to_port     = 80
+    from_port   = var.http_ingress_port
+    to_port     = var.http_ingress_port
     protocol    = "tcp"
     #security_groups = [aws_security_group.alb_sg.id]
     cidr_blocks = [var.security_group_cidr_block]
@@ -188,8 +188,8 @@ resource "aws_security_group" "web_sg" {
 
   ingress {
     description = "HTTPS PORT"
-    from_port   = 443
-    to_port     = 443
+    from_port   = var.https_ingress_port
+    to_port     = var.https_ingress_port
     protocol    = "tcp"
     cidr_blocks = [var.security_group_cidr_block]
     #security_groups = [aws_security_group.alb_sg.id]
@@ -211,8 +211,8 @@ resource "aws_security_group" "python_sg" {
 
   ingress {
     description = "SSH"
-    from_port   = 22
-    to_port     = 22
+    from_port   = var.ssh_ingress_port
+    to_port     = var.ssh_ingress_port
     protocol    = "tcp"
     cidr_blocks = [var.security_group_cidr_block]
   }
@@ -241,8 +241,8 @@ resource "aws_security_group" "jenkins_sg" {
 
   ingress {
     description = "SSH"
-    from_port   = 22
-    to_port     = 22
+    from_port   = var.ssh_ingress_port
+    to_port     = var.ssh_ingress_port
     protocol    = "tcp"
     cidr_blocks = [var.security_group_cidr_block]
   }
@@ -264,13 +264,13 @@ resource "aws_security_group" "jenkins_sg" {
 
 # Security group for RDS
 resource "aws_security_group" "postgres_sg" {
-  name        = "postgres-sg"
+  name        = var.db_sg_name
   description = "Allow Postgres traffic"
   vpc_id      = aws_vpc.techbleatvpc.id
 
   ingress {
-    from_port       = 5432
-    to_port         = 5432
+    from_port       = var.db_sg_ingress_from_port
+    to_port         = var.db_sg_ingress_to_port
     protocol        = "tcp"
     security_groups = [aws_security_group.python_sg.id]
   }

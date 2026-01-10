@@ -24,6 +24,26 @@ variable "public-subnet-1-name" {
   default = "public_1"
 }
 
+variable "public-subnet-1-az" {
+  type = string
+  default = "us-east-2a"
+}
+
+variable "private-subnet-1-az" {
+  type = string
+  default = "us-east-2a"
+}
+
+variable "public-subnet-2-az" {
+  type = string
+  default = "us-east-2b"
+}
+
+variable "private-subnet-2-az" {
+  type = string
+  default = "us-east-2b"
+}
+
 variable "public-subnet-2-cidr" {
   type    = string
   default = "10.0.2.0/24"
@@ -59,6 +79,21 @@ variable "security_group_cidr_block" {
   default = "0.0.0.0/0"
 }
 
+variable "ssh_ingress_port" {
+  type = number
+  default = 22
+}
+
+variable "https_ingress_port" {
+  type = number
+  default = 443
+}
+
+variable "http_ingress_port" {
+  type = number
+  default = 80
+}
+
 #PYTHON VARIABLES
 variable "python_machine_security_group_name" {
   type    = string
@@ -78,8 +113,13 @@ variable "web_machine_security_group_name" {
 
 #DATABASE VARIABLES
 variable "db_sg_name" {
-  default = ""
+  default = "postgres-sg"
 }
+
+variable "db_name" {
+  default = "my_db"
+}
+
 
 variable "db_sg_ingress_from_port" {
   default = ""

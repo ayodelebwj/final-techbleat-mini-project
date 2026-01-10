@@ -25,22 +25,22 @@ variable "public-subnet-1-name" {
 }
 
 variable "public-subnet-1-az" {
-  type = string
+  type    = string
   default = "us-east-2a"
 }
 
 variable "private-subnet-1-az" {
-  type = string
+  type    = string
   default = "us-east-2a"
 }
 
 variable "public-subnet-2-az" {
-  type = string
+  type    = string
   default = "us-east-2b"
 }
 
 variable "private-subnet-2-az" {
-  type = string
+  type    = string
   default = "us-east-2b"
 }
 
@@ -80,17 +80,17 @@ variable "security_group_cidr_block" {
 }
 
 variable "ssh_ingress_port" {
-  type = number
+  type    = number
   default = 22
 }
 
 variable "https_ingress_port" {
-  type = number
+  type    = number
   default = 443
 }
 
 variable "http_ingress_port" {
-  type = number
+  type    = number
   default = 80
 }
 

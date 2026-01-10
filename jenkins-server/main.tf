@@ -1,10 +1,7 @@
 # configure terraform backend
 terraform {
-  backend "s3" {
-    bucket  = "techbleatweek8"
-    key     = "env/dev/terraform.tfstate"
-    region  = "us-east-2"
-    encrypt = true
+  backend "local" {
+    path = "/tmp/terraform.tfstate"
   }
 }
 
@@ -301,12 +298,12 @@ data "aws_ami" "ubuntu_2404" {
 
 #Create Jenkins Server
 resource "aws_instance" "jenkins_instance" {
-  ami             = data.aws_ami.ubuntu_2404.id
-  instance_type   = var.jenkins_server_instance_type
-  key_name        = var.jenkins_server_key_name
+  ami                    = data.aws_ami.ubuntu_2404.id
+  instance_type          = var.jenkins_server_instance_type
+  key_name               = var.jenkins_server_key_name
   vpc_security_group_ids = [aws_security_group.jenkins_sg.id]
-  subnet_id               = aws_subnet.public_1.id
-  user_data       = file("./importantbinaries.sh")
+  subnet_id              = aws_subnet.public_1.id
+  user_data              = file("./importantbinaries.sh")
 
   tags = {
     Name = var.jenkins_server_tag_name

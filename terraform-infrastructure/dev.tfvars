@@ -2,23 +2,23 @@
 #=========================================
 #GENERAL VARIABLES VALUES
 #=========================================
-region = "us-east-2"
+region = "us-east-1"
 
 #=========================================
 #PYTHON APP MACHINE VARIABLES
 #=========================================
-python_machine_instance_type = "t3.micro"
+python_machine_instance_type = "t2.micro"
 
-python_machine_key_name = "ohio-kp"
+python_machine_key_name = "terra-kp"
 
 python_machine_tag_name = "python-instance"
 
 #=========================================
 #WEB SERVER MACHINE VARIABLES VALUES
 #=========================================
-web_machine_instance_type = "t3.micro"
+web_machine_instance_type = "t2.micro"
 
-web_machine_key_name = "ohio-kp"
+web_machine_key_name = "terra-kp"
 
 web_machine_tag_name = "web-instance"
 

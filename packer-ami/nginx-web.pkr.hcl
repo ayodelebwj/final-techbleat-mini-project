@@ -15,8 +15,8 @@ data "amazon-parameterstore" "web_ubuntu_params" {
 #CREATES THE INSTANCE NEEDED TO BUILD AMI AND CREATE A TEMPLATE
 #================================================================
 source "amazon-ebs" "web-vm-source" {
-  region        = "us-east-2"
-  instance_type = "t3.micro"
+  region        = "us-east-1"
+  instance_type = "t2.micro"
   ssh_username  = "ubuntu"
   source_ami    = data.amazon-parameterstore.web_ubuntu_params.value
   ami_name      = "web-ami"

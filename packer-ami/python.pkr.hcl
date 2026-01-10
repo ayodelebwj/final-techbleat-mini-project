@@ -15,8 +15,8 @@ data "amazon-parameterstore" "python_ubuntu_params" {
 #================================================================
 #Creates the instance to build AMI off it
 source "amazon-ebs" "python-vm-source" {
-  region        = "us-east-2"
-  instance_type = "t3.micro"
+  region        = "us-east-1"
+  instance_type = "t2.micro"
   ssh_username  = "ubuntu"
   source_ami    = data.amazon-parameterstore.python_ubuntu_params.value
   ami_name      = "python-ami"
